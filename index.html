@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinguaLoop - Învață limbi străine prin conversații reale</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --secondary: #4cc9f0;
+            --accent: #7209b7;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4bb543;
+            --warning: #ffcc00;
+            --danger: #dc3545;
+            --gray: #6c757d;
+            --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header și navigație */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+        
+        header.scrolled {
+            padding: 5px 0;
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            z-index: 1001;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 25px;
+            position: relative;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 0;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 10px 25px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        /* Pagini */
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+        
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Home Page */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,192C1248,192,1344,128,1392,96L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-light {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-light:hover {
+            background: #f0f0f0;
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 20%;
+            right: 10%;
+            animation-delay: 1s;
+        }
+        
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 2s;
+        }
+        
+        .floating-element:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            bottom: 10%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+        
+        /* Section Styles */
+        .section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        /* Language Grid */
+        .languages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .language-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .language-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+        
+        .language-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .language-card:hover::before {
+            opacity: 1;
+        }
+        
+        .language-card:hover .language-flag,
+        .language-card:hover h3,
+        .language-card:hover p {
+            color: white;
+        }
+        
+        .language-flag {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+        
+        .language-card h3 {
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+            font-size: 1.8rem;
+        }
+        
+        .language-card p {
+            color: var(--gray);
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+        
+        /* Language Pages */
+        .language-hero {
+            padding: 150px 0 80px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .language-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .language-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .language-hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        /* English Page */
+        .english-hero {
+            background: linear-gradient(135deg, #1e3c8b, #3b6fde);
+        }
+        
+        /* Spanish Page */
+        .spanish-hero {
+            background: linear-gradient(135deg, #c40e0e, #e63939);
+        }
+        
+        /* French Page */
+        .french-hero {
+            background: linear-gradient(135deg, #002395, #1e5bc5);
+        }
+        
+        /* German Page */
+        .german-hero {
+            background: linear-gradient(135deg, #000000, #dd0000, #ffce00);
+            background-size: 300% 300%;
+            animation: germanGradient 8s ease infinite;
+        }
+        
+        /* Italian Page */
+        .italian-hero {
+            background: linear-gradient(135deg, #009246, #ffffff, #ce2b37);
+            background-size: 300% 300%;
+            animation: italianGradient 8s ease infinite;
+        }
+        
+        /* Japanese Page */
+        .japanese-hero {
+            background: linear-gradient(135deg, #bc002d, #ffffff);
+            background-size: 200% 200%;
+            animation: japaneseGradient 6s ease infinite;
+        }
+        
+        /* Language Content */
+        .language-content {
+            padding: 80px 0;
+        }
+        
+        .language-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+        
+        .overview-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .overview-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .overview-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .overview-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .overview-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+        
+        .language-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        /* Difficulty Levels */
+        .difficulty-levels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        
+        .difficulty-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .difficulty-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .difficulty-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .difficulty-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: white;
+            font-size: 2rem;
+            transition: var(--transition);
+        }
+        
+        .difficulty-card:hover .difficulty-icon {
+            transform: scale(1.1) rotate(10deg);
+        }
+        
+        /* Exercise Pages */
+        .exercise-page {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
+        
+        .exercise-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exercise-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .exercise-title {
+            font-size: 2rem;
+            color: var(--primary-dark);
+        }
+        
+        .exercise-progress {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .progress-bar {
+            width: 200px;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .exercise-body {
+            margin-bottom: 40px;
+        }
+        
+        .exercise-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        .exercise-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .exercise-option {
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exercise-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(67, 97, 238, 0.1), transparent);
+            transition: 0.5s;
+        }
+        
+        .exercise-option:hover::before {
+            left: 100%;
+        }
+        
+        .exercise-option:hover {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+            transform: translateX(5px);
+        }
+        
+        .exercise-option.selected {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .exercise-option.correct {
+            border-color: var(--success);
+            background: rgba(75, 181, 67, 0.1);
+        }
+        
+        .exercise-option.incorrect {
+            border-color: var(--danger);
+            background: rgba(220, 53, 69, 0.1);
+        }
+        
+        .exercise-feedback {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: none;
+            animation: slideInUp 0.5s ease;
+        }
+        
+        .exercise-feedback.correct {
+            background: rgba(75, 181, 67, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+        
+        .exercise-feedback.incorrect {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+        
+        .exercise-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Homework Section */
+        .homework-section {
+            margin: 80px 0;
+        }
+        
+        .homework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .homework-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .homework-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .homework-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .homework-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .homework-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+        
+        .homework-card p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+        
+        .homework-difficulty {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .difficulty-easy {
+            background: rgba(76, 201, 240, 0.2);
+            color: var(--secondary);
+        }
+        
+        .difficulty-medium {
+            background: rgba(255, 204, 0, 0.2);
+            color: var(--warning);
+        }
+        
+        .difficulty-hard {
+            background: rgba(220, 53, 69, 0.2);
+            color: var(--danger);
+        }
+        
+        /* Authentication Modal */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-modal.active {
+            display: flex;
+        }
+        
+        .auth-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: modalAppear 0.3s ease;
+        }
+        
+        .auth-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .auth-header h2 {
+            color: var(--primary-dark);
+        }
+        
+        .close-auth {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-auth:hover {
+            color: var(--danger);
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .auth-tab {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .auth-tab.active {
+            color: var(--primary);
+        }
+        
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+        
+        .auth-submit {
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+        }
+        
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+        
+        .back-button:hover {
+            transform: translateX(-5px);
+            color: var(--primary-dark);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 70px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h4 {
+            margin-bottom: 20px;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+        
+        @keyframes germanGradient {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+        
+        @keyframes italianGradient {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+        
+        @keyframes japaneseGradient {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+        
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Particle Animation */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .auth-buttons {
+                display: none;
+            }
+            
+            .user-menu {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .language-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p, .language-hero p {
+                font-size: 1.1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .exercise-content {
+                padding: 30px 20px;
+            }
+            
+            .exercise-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .auth-container {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            html {
+                font-size: 14px;
+            }
+            
+            .hero, .language-hero {
+                padding: 120px 0 80px;
+            }
+            
+            .section {
+                padding: 70px 0;
+            }
+            
+            .language-card, .difficulty-card {
+                padding: 30px 20px;
+            }
+            
+            .progress-bar {
+                width: 150px;
+            }
+        }
+        
+        /* Scroll to top button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .scroll-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+        
+        /* Loading animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-circle {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loader">
+        <div class="loader-circle"></div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2 id="auth-title">Autentificare</h2>
+                <button class="close-auth" id="close-auth">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Autentificare</button>
+                <button class="auth-tab" data-tab="register">Înregistrare</button>
+            </div>
+            <form class="auth-form active" id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="Introduceți email-ul" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Parolă</label>
+                    <input type="password" id="login-password" placeholder="Introduceți parola" required>
+                </div>
+                <button type="submit" class="btn btn-primary auth-submit">Autentificare</button>
+                <div class="auth-footer">
+                    <p>Nu aveți cont? <a href="#" id="switch-to-register">Înregistrați-vă</a></p>
+                </div>
+            </form>
+            <form class="auth-form" id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Nume complet</label>
+                    <input type="text" id="register-name" placeholder="Introduceți numele complet" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" placeholder="Introduceți email-ul" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Parolă</label>
+                    <input type="password" id="register-password" placeholder="Creați o parolă" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm">Confirmare parolă</label>
+                    <input type="password" id="register-confirm" placeholder="Confirmați parola" required>
+                </div>
+                <button type="submit" class="btn btn-primary auth-submit">Înregistrare</button>
+                <div class="auth-footer">
+                    <p>Aveți deja cont? <a href="#" id="switch-to-login">Autentificați-vă</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo" data-page="home">
+                    <i class="fas fa-language"></i>
+                    Lingua<span>Loop</span>
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#" data-page="home">Acasă</a></li>
+                    <li><a href="#" data-page="languages">Limbi</a></li>
+                    <li><a href="#" data-page="pricing">Prețuri</a></li>
+                    <li><a href="#" data-page="about">Despre</a></li>
+                </ul>
+                <div class="user-menu" id="user-menu" style="display: none;">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                </div>
+                <div class="auth-buttons" id="auth-buttons">
+                    <button class="btn btn-outline" id="login-btn">Autentificare</button>
+                    <button class="btn btn-primary" id="register-btn">Înregistrare</button>
+                </div>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <div id="home-page" class="page active">
+        <section class="hero">
+            <div class="floating-elements">
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+            </div>
+            <div class="particles" id="particles"></div>
+            <div class="container">
+                <div class="hero-content">
+                    <h1 data-aos="fade-up" data-aos-duration="1000">Învață limbi străine prin conversații reale cu AI</h1>
+                    <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">Perfecționează-ți abilitățile lingvistice prin conversații interactive cu vorbitori nativi AI, feedback instant și scenarii practice din viața reală.</p>
+                    <div class="hero-buttons" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+                        <button class="btn btn-light" data-page="languages">
+                            <i class="fas fa-rocket"></i>
+                            Explorează Limbi
+                        </button>
+                        <button class="btn btn-outline" style="border-color: white; color: white;">
+                            <i class="fas fa-play-circle"></i>
+                            Vezi demo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-title">
+                    <h2 data-aos="fade-up">Limbi disponibile</h2>
+                    <p data-aos="fade-up" data-aos-delay="200">Alege dintre o varietate largă de limbi și începe să înveți astăzi</p>
+                </div>
+                <div class="languages-grid">
+                    <div class="language-card" data-aos="fade-up" data-aos-delay="0" data-page="english">
+                        <div class="language-flag">🇬🇧</div>
+                        <h3>Engleză</h3>
+                        <p>Vorbitori nativi din Marea Britanie, SUA, Australia</p>
+                    </div>
+                    <div class="language-card" data-aos="fade-up" data-aos-delay="100" data-page="spanish">
+                        <div class="language-flag">🇪🇸</div>
+                        <h3>Spaniolă</h3>
+                        <p>Variații din Spania, Mexic, Argentina</p>
+                    </div>
+                    <div class="language-card" data-aos="fade-up" data-aos-delay="200" data-page="french">
+                        <div class="language-flag">🇫🇷</div>
+                        <h3>Franceză</h3>
+                        <p>Vorbitori din Franța, Canada, Belgia</p>
+                    </div>
+                    <div class="language-card" data-aos="fade-up" data-aos-delay="300" data-page="german">
+                        <div class="language-flag">🇩🇪</div>
+                        <h3>Germană</h3>
+                        <p>Germania, Austria, Elveția</p>
+                    </div>
+                    <div class="language-card" data-aos="fade-up" data-aos-delay="400" data-page="italian">
+                        <div class="language-flag">🇮🇹</div>
+                        <h3>Italiană</h3>
+                        <p>Vorbitori nativi din Italia</p>
+                    </div>
+                    <div class="language-card" data-aos="fade-up" data-aos-delay="500" data-page="japanese">
+                        <div class="language-flag">🇯🇵</div>
+                        <h3>Japoneză</h3>
+                        <p>Vorbitori din Tokyo, Osaka, Kyoto</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Languages Page -->
+    <div id="languages-page" class="page">
+        <section class="section">
+            <div class="container">
+                <a href="#" class="back-button" data-page="home">
+                    <i class="fas fa-arrow-left"></i>
+                    Înapoi la Acasă
+                </a>
+                <div class="section-title">
+                    <h2 data-aos="fade-up">Toate limbile disponibile</h2>
+                    <p data-aos="fade-up" data-aos-delay="200">Alege limba pe care dorești să o înveți și descoperă planul de învățare personalizat</p>
+                </div>
+                <div class="languages-grid">
+                    <div class="language-card" data-aos="fade-up" data-aos-delay="0" data-page="english">
+                        <div class="language-flag">🇬🇧</div>
+                        <h3>Engleză</h3>
+                        <p>Vorbitori nativi din Marea Britanie, SUA, Australia</p>
+                    </div>
+                    <div class="language-card" data-aos="fade-up" data-aos-delay="100" data-page="spanish">
+                        <div class="language-flag">🇪🇸</div>
+                        <h3>Spaniolă</h3>
+                        <p>Variații din Spania, Mexic, Argentina</p>
+                    </div>
+                    <div class="language-card" data-aos="fade-up" data-aos-delay="200" data-page="french">
+                        <div class="language-flag">🇫🇷</div>
+                        <h3>Franceză</h3>
+                        <p>Vorbitori din Franța, Canada, Belgia</p>
+                    </div>
+                    <div class="language-card" data-aos="fade-up" data-aos-delay="300" data-page="german">
+                        <div class="language-flag">🇩🇪</div>
+                        <h3>Germană</h3>
+                        <p>Germania, Austria, Elveția</p>
+                    </div>
+                    <div class="language-card" data-aos="fade-up" data-aos-delay="400" data-page="italian">
+                        <div class="language-flag">🇮🇹</div>
+                        <h3>Italiană</h3>
+                        <p>Vorbitori nativi din Italia</p>
+                    </div>
+                    <div class="language-card" data-aos="fade-up" data-aos-delay="500" data-page="japanese">
+                        <div class="language-flag">🇯🇵</div>
+                        <h3>Japoneză</h3>
+                        <p>Vorbitori din Tokyo, Osaka, Kyoto</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- English Language Page -->
+    <div id="english-page" class="page">
+        <section class="language-hero english-hero">
+            <div class="particles" id="english-particles"></div>
+            <div class="container">
+                <div class="language-hero-content">
+                    <a href="#" class="back-button" data-page="languages" style="color: white;">
+                        <i class="fas fa-arrow-left"></i>
+                        Înapoi la Limbi
+                    </a>
+                    <h1 data-aos="fade-up">Learn English</h1>
+                    <p data-aos="fade-up" data-aos-delay="200">Discover the world through the most spoken international language</p>
+                    <div class="hero-buttons" data-aos="fade-up" data-aos-delay="400">
+                        <button class="btn btn-light" data-page="english-exercises">
+                            <i class="fas fa-pen"></i>
+                            Start Exercises
+                        </button>
+                        <button class="btn btn-outline" style="border-color: white; color: white;" data-page="english-lessons">
+                            <i class="fas fa-book"></i>
+                            View Lessons
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="language-content">
+            <div class="container">
+                <div class="section-title">
+                    <h2 data-aos="fade-up">About English Language</h2>
+                    <p data-aos="fade-up" data-aos-delay="200">English is a West Germanic language that was first spoken in early medieval England</p>
+                </div>
+
+                <div class="language-overview">
+                    <div class="overview-card" data-aos="fade-up" data-aos-delay="0">
+                        <div class="overview-icon">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <h3>Global Importance</h3>
+                        <p>English is the third most spoken native language in the world, after Standard Chinese and Spanish. It is the most widely learned second language and is either the official language or one of the official languages in almost 60 sovereign states.</p>
+                    </div>
+                    <div class="overview-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="overview-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h3>Historical Development</h3>
+                        <p>English has developed over the course of more than 1,400 years. The earliest forms of English, a set of Anglo-Frisian dialects brought to Great Britain by Anglo-Saxon settlers in the 5th century, are called Old English.</p>
+                    </div>
+                    <div class="overview-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="overview-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h3>Language Family</h3>
+                        <p>English belongs to the Indo-European family of languages and is therefore related to most other languages spoken in Europe and western Asia from Iceland to India. The parent tongue, called Proto-Indo-European, was spoken about 5,000 years ago.</p>
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <h2 data-aos="fade-up">English Language Statistics</h2>
+                    <p data-aos="fade-up" data-aos-delay="200">Key facts about the English language worldwide</p>
+                </div>
+
+                <div class="language-stats">
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="0">
+                        <div class="stat-number">1.5B</div>
+                        <div class="stat-label">Total Speakers</div>
+                    </div>
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="stat-number">67</div>
+                        <div class="stat-label">Countries</div>
+                    </div>
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="stat-number">3rd</div>
+                        <div class="stat-label">Most Spoken</div>
+                    </div>
+                    <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+                        <div class="stat-number">1,400+</div>
+                        <div class="stat-label">Years Old</div>
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <h2 data-aos="fade-up">Learning Path</h2>
+                    <p data-aos="fade-up" data-aos-delay="200">Choose your starting level and begin your English journey</p>
+                </div>
+
+                <div class="difficulty-levels">
+                    <div class="difficulty-card" data-aos="fade-up" data-aos-delay="0">
+                        <div class="difficulty-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h3>Beginner (A1-A2)</h3>
+                        <p>Learn basic vocabulary, simple grammar structures, and everyday expressions. Focus on introducing yourself, asking simple questions, and understanding basic instructions.</p>
+                        <button class="btn btn-outline" data-page="english-beginner-exercises">Start Learning</button>
+                    </div>
+                    <div class="difficulty-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="difficulty-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3>Intermediate (B1-B2)</h3>
+                        <p>Expand your vocabulary, master complex grammar, and improve fluency. Learn to describe experiences, express opinions, and handle most situations while traveling.</p>
+                        <button class="btn btn-outline" data-page="english-intermediate-exercises">Continue Learning</button>
+                    </div>
+                    <div class="difficulty-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="difficulty-icon">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <h3>Advanced (C1-C2)</h3>
+                        <p>Refine your language skills to near-native level. Focus on nuanced expressions, professional vocabulary, and understanding implicit meanings in complex texts.</p>
+                        <button class="btn btn-outline" data-page="english-advanced-exercises">Master English</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- English Exercises Page -->
+    <div id="english-exercises" class="page">
+        <section class="section">
+            <div class="container">
+                <a href="#" class="back-button" data-page="english">
+                    <i class="fas fa-arrow-left"></i>
+                    Înapoi la Engleză
+                </a>
+                <div class="section-title">
+                    <h2 data-aos="fade-up">English Exercises</h2>
+                    <p data-aos="fade-up" data-aos-delay="200">Practice and improve your English skills with interactive exercises</p>
+                </div>
+
+                <div class="homework-section">
+                    <div class="homework-grid">
+                        <div class="homework-card" data-aos="fade-up" data-aos-delay="0">
+                            <div class="homework-icon">
+                                <i class="fas fa-pen"></i>
+                            </div>
+                            <span class="homework-difficulty difficulty-easy">Beginner</span>
+                            <h3>Basic Vocabulary</h3>
+                            <p>Learn 50 essential English words with pronunciation, examples, and usage in context. Perfect for absolute beginners.</p>
+                            <button class="btn btn-outline" data-page="english-vocabulary-exercise">Start Exercise</button>
+                        </div>
+                        <div class="homework-card" data-aos="fade-up" data-aos-delay="100">
+                            <div class="homework-icon">
+                                <i class="fas fa-microphone"></i>
+                            </div>
+                            <span class="homework-difficulty difficulty-medium">Intermediate</span>
+                            <h3>Conversation Practice</h3>
+                            <p>Practice speaking with AI about daily routines, hobbies, and common situations. Improve your fluency and pronunciation.</p>
+                            <button class="btn btn-outline" data-page="english-conversation-exercise">Start Exercise</button>
+                        </div>
+                        <div class="homework-card" data-aos="fade-up" data-aos-delay="200">
+                            <div class="homework-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <span class="homework-difficulty difficulty-hard">Advanced</span>
+                            <h3>Grammar Challenge</h3>
+                            <p>Test your knowledge of complex English grammar structures, including conditionals, passive voice, and reported speech.</p>
+                            <button class="btn btn-outline" data-page="english-grammar-exercise">Start Exercise</button>
+                        </div>
+                        <div class="homework-card" data-aos="fade-up" data-aos-delay="300">
+                            <div class="homework-icon">
+                                <i class="fas fa-headphones"></i>
+                            </div>
+                            <span class="homework-difficulty difficulty-medium">All Levels</span>
+                            <h3>Listening Comprehension</h3>
+                            <p>Improve your listening skills with audio exercises featuring different accents and speaking speeds.</p>
+                            <button class="btn btn-outline" data-page="english-listening-exercise">Start Exercise</button>
+                        </div>
+                        <div class="homework-card" data-aos="fade-up" data-aos-delay="400">
+                            <div class="homework-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <span class="homework-difficulty difficulty-hard">Advanced</span>
+                            <h3>Writing Practice</h3>
+                            <p>Develop your writing skills with exercises ranging from simple emails to complex essays and reports.</p>
+                            <button class="btn btn-outline" data-page="english-writing-exercise">Start Exercise</button>
+                        </div>
+                        <div class="homework-card" data-aos="fade-up" data-aos-delay="500">
+                            <div class="homework-icon">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <span class="homework-difficulty difficulty-easy">Beginner</span>
+                            <h3>Word Games</h3>
+                            <p>Learn new vocabulary through fun and interactive games like crosswords, word searches, and matching exercises.</p>
+                            <button class="btn btn-outline" data-page="english-games-exercise">Start Exercise</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- English Vocabulary Exercise Page -->
+    <div id="english-vocabulary-exercise" class="page exercise-page">
+        <div class="particles" id="vocabulary-particles"></div>
+        <div class="container">
+            <a href="#" class="back-button" data-page="english-exercises">
+                <i class="fas fa-arrow-left"></i>
+                Înapoi la Exerciții
+            </a>
+            <div class="exercise-content">
+                <div class="exercise-header">
+                    <h1 class="exercise-title">Vocabulary Exercise: Basic Words</h1>
+                    <div class="exercise-progress">
+                        <span>Question 1 of 10</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 10%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="exercise-body">
+                    <div class="exercise-text">
+                        <p>Match the English words with their Romanian translations:</p>
+                        
+                        <div class="exercise-question">
+                            <h3>Question 1: What is the English word for "bună ziua"?</h3>
+                            <div class="exercise-options">
+                                <div class="exercise-option">Good night</div>
+                                <div class="exercise-option" data-correct="true">Good afternoon</div>
+                                <div class="exercise-option">Good morning</div>
+                                <div class="exercise-option">Goodbye</div>
+                            </div>
+                        </div>
+                        
+                        <div class="exercise-feedback correct" id="exercise-feedback">
+                            <i class="fas fa-check-circle"></i> Correct! "Good afternoon" is the appropriate translation for "bună ziua".
+                        </div>
+                    </div>
+                </div>
+                <div class="exercise-actions">
+                    <button class="btn btn-outline" id="check-answer">Check Answer</button>
+                    <button class="btn btn-primary" id="next-question" style="display: none;">Next Question</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>LinguaLoop</h4>
+                    <p>Platforma noastră de învățare a limbilor străine folosește tehnologia AI pentru a oferi experiențe de conversație realiste și personalizate.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Link-uri rapide</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" data-page="home"><i class="fas fa-chevron-right"></i> Acasă</a></li>
+                        <li><a href="#" data-page="languages"><i class="fas fa-chevron-right"></i> Limbi</a></li>
+                        <li><a href="#" data-page="pricing"><i class="fas fa-chevron-right"></i> Prețuri</a></li>
+                        <li><a href="#" data-page="about"><i class="fas fa-chevron-right"></i> Despre</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Resurse</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Blog</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Ghiduri de învățare</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Centru de ajutor</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Comunitate</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-envelope"></i> contact@lingualoop.ro</a></li>
+                        <li><a href="#"><i class="fas fa-phone"></i> +40 123 456 789</a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> București, România</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 LinguaLoop. Toate drepturile rezervate.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to top button -->
+    <div class="scroll-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS (Animate On Scroll)
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Loading screen
+        window.addEventListener('load', function() {
+            const loader = document.querySelector('.loader');
+            setTimeout(() => {
+                loader.classList.add('hidden');
+            }, 1000);
+        });
+
+        // Create particle animations
+        function createParticles(containerId, count = 30) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random properties
+                const size = Math.random() * 10 + 5;
+                const left = Math.random() * 100;
+                const animationDelay = Math.random() * 5;
+                const animationDuration = Math.random() * 10 + 10;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${left}%`;
+                particle.style.animationDelay = `${animationDelay}s`;
+                particle.style.animationDuration = `${animationDuration}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Initialize particles on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles('particles', 40);
+            createParticles('english-particles', 30);
+            createParticles('vocabulary-particles', 25);
+        });
+
+        // Page Navigation System
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+                
+                // Refresh AOS animations for the new page
+                setTimeout(() => {
+                    AOS.refresh();
+                }, 300);
+            }
+        }
+
+        // Set up page navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up navigation links
+            document.querySelectorAll('[data-page]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page') + '-page';
+                    showPage(pageId);
+                    
+                    // Close mobile menu if open
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                        mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+                        mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+                    }
+                });
+            });
+            
+            // Show home page by default
+            showPage('home-page');
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            const icon = this.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Scroll to top button
+        const scrollToTopBtn = document.querySelector('.scroll-to-top');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                scrollToTopBtn.classList.add('active');
+            } else {
+                scrollToTopBtn.classList.remove('active');
+            }
+        });
+        
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Parallax effect for floating elements
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const floatingElements = document.querySelectorAll('.floating-element');
+            
+            floatingElements.forEach((element, index) => {
+                const speed = 0.5 + (index * 0.1);
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px) rotate(${scrolled * 0.05}deg)`;
+            });
+        });
+
+        // Authentication System
+        const authModal = document.getElementById('auth-modal');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const closeAuth = document.getElementById('close-auth');
+        const authTabs = document.querySelectorAll('.auth-tab');
+        const authForms = document.querySelectorAll('.auth-form');
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const userMenu = document.getElementById('user-menu');
+        const authButtons = document.getElementById('auth-buttons');
+        const userAvatar = document.getElementById('user-avatar');
+
+        // Open auth modal
+        loginBtn.addEventListener('click', function() {
+            authModal.classList.add('active');
+            switchToTab('login');
+        });
+
+        registerBtn.addEventListener('click', function() {
+            authModal.classList.add('active');
+            switchToTab('register');
+        });
+
+        // Close auth modal
+        closeAuth.addEventListener('click', function() {
+            authModal.classList.remove('active');
+        });
+
+        // Close modal when clicking outside
+        authModal.addEventListener('click', function(e) {
+            if (e.target === authModal) {
+                authModal.classList.remove('active');
+            }
+        });
+
+        // Switch between login and register tabs
+        function switchToTab(tabName) {
+            // Update tabs
+                                            authTabs.forEach(tab => {
+                                    tab.classList.remove('active');
+                                    if (tab.getAttribute('data-tab') === tabName) {
+                                        tab.classList.add('active');
+                                    }
+                                });
+                                
+                                // Update forms
+                                authForms.forEach(form => {
+                                    form.classList.remove('active');
+                                    if (form.id === `${tabName}-form`) {
+                                        form.classList.add('active');
+                                    }
+                                });
+                                
+                                // Update title
+                                document.getElementById('auth-title').textContent = 
+                                    tabName === 'login' ? 'Autentificare' : 'Înregistrare';
+                            }
+                            
+                            // Tab click events
+                            authTabs.forEach(tab => {
+                                tab.addEventListener('click', function() {
+                                    const tabName = this.getAttribute('data-tab');
+                                    switchToTab(tabName);
+                                });
+                            });
+                            
+                            // Switch between forms
+                            switchToRegister.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                switchToTab('register');
+                            });
+                            
+                            switchToLogin.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                switchToTab('login');
+                            });
+                            
+                            // Form submission
+                            loginForm.addEventListener('submit', function(e) {
+                                e.preventDefault();
+                                const email = document.getElementById('login-email').value;
+                                const password = document.getElementById('login-password').value;
+                                
+                                // Simulate login
+                                simulateLogin(email);
+                            });
+                            
+                            registerForm.addEventListener('submit', function(e) {
+                                e.preventDefault();
+                                const name = document.getElementById('register-name').value;
+                                const email = document.getElementById('register-email').value;
+                                const password = document.getElementById('register-password').value;
+                                
+                                // Simulate registration
+                                simulateLogin(email, name);
+                            });
+                            
+                            function simulateLogin(email, name = 'Utilizator') {
+                                // Close modal
+                                authModal.classList.remove('active');
+                                
+                                // Hide auth buttons, show user menu
+                                authButtons.style.display = 'none';
+                                userMenu.style.display = 'flex';
+                                
+                                // Set user avatar with first letter
+                                userAvatar.textContent = name.charAt(0).toUpperCase();
+                                
+                                // Show success message
+                                alert(`Bine ai venit, ${name}! Te-ai autentificat cu succes.`);
+                            }
+                            
+                            // Exercise functionality
+                            const exerciseOptions = document.querySelectorAll('.exercise-option');
+                            const checkAnswerBtn = document.getElementById('check-answer');
+                            const nextQuestionBtn = document.getElementById('next-question');
+                            const exerciseFeedback = document.getElementById('exercise-feedback');
+                            
+                            let selectedOption = null;
+                            
+                            exerciseOptions.forEach(option => {
+                                option.addEventListener('click', function() {
+                                    // Remove previous selection
+                                    exerciseOptions.forEach(opt => {
+                                        opt.classList.remove('selected');
+                                    });
+                                    
+                                    // Select current option
+                                    this.classList.add('selected');
+                                    selectedOption = this;
+                                });
+                            });
+                            
+                            checkAnswerBtn.addEventListener('click', function() {
+                                if (!selectedOption) {
+                                    alert('Te rog selectează un răspuns!');
+                                    return;
+                                }
+                                
+                                // Show feedback
+                                exerciseFeedback.style.display = 'block';
+                                
+                                // Mark correct/incorrect
+                                if (selectedOption.getAttribute('data-correct') === 'true') {
+                                    selectedOption.classList.add('correct');
+                                    exerciseFeedback.classList.add('correct');
+                                    exerciseFeedback.classList.remove('incorrect');
+                                } else {
+                                    selectedOption.classList.add('incorrect');
+                                    exerciseFeedback.classList.add('incorrect');
+                                    exerciseFeedback.classList.remove('correct');
+                                    
+                                    // Highlight correct answer
+                                    exerciseOptions.forEach(opt => {
+                                        if (opt.getAttribute('data-correct') === 'true') {
+                                            opt.classList.add('correct');
+                                        }
+                                    });
+                                }
+                                
+                                // Show next question button
+                                checkAnswerBtn.style.display = 'none';
+                                nextQuestionBtn.style.display = 'block';
+                            });
+                            
+                            nextQuestionBtn.addEventListener('click', function() {
+                                // In a real app, this would load the next question
+                                alert('Felicitări! Ai finalizat acest exercițiu. Întoarce-te pentru mai multe exerciții.');
+                                showPage('english-exercises-page');
+                            });
+                            
+                            // Initialize the app
+                            document.addEventListener('DOMContentLoaded', function() {
+                                // Show home page
+                                showPage('home-page');
+                                
+                                // Create particles
+                                createParticles('particles', 40);
+                                createParticles('english-particles', 30);
+                                createParticles('vocabulary-particles', 25);
+                                
+                                // Add hover effects to all buttons
+                                document.querySelectorAll('.btn').forEach(button => {
+                                    button.addEventListener('mouseenter', function() {
+                                        this.style.transform = 'translateY(-5px)';
+                                    });
+                                    
+                                    button.addEventListener('mouseleave', function() {
+                                        this.style.transform = 'translateY(0)';
+                                    });
+                                });
+                            });
+                        </script>
+</body>
+</html>
