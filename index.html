@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -8,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        /* CSS-ul existent rămâne neschimbat */
         :root {
             --primary: #4361ee;
             --primary-dark: #3a0ca3;
@@ -49,18 +49,493 @@
             padding: 0 15px;
         }
         
-        /* Stilurile existente rămân neschimbate */
-        /* ... */
+        /* Header și navigație */
+        header {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+        }
         
-        /* Stiluri noi pentru paginile de exerciții și lecții */
+        header.scrolled {
+            padding: 5px 0;
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+        }
         
-        .exercise-container {
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            z-index: 1001;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 25px;
+            position: relative;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 0;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 10px 25px rgba(67, 97, 238, 0.4);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        /* Pagini */
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+        
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Home Page */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,192C1248,192,1344,128,1392,96L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-light {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-light:hover {
+            background: #f0f0f0;
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+        }
+        
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+        
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        .floating-element:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            top: 20%;
+            right: 10%;
+            animation-delay: 1s;
+        }
+        
+        .floating-element:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 2s;
+        }
+        
+        .floating-element:nth-child(4) {
+            width: 100px;
+            height: 100px;
+            bottom: 10%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+        
+        /* Section Styles */
+        .section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        /* Language Grid */
+        .languages-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
         
-        .exercise-card {
+        .language-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .language-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 0;
+        }
+        
+        .language-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .language-card:hover::before {
+            opacity: 1;
+        }
+        
+        .language-card:hover .language-flag,
+        .language-card:hover h3,
+        .language-card:hover p {
+            color: white;
+        }
+        
+        .language-flag {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+        
+        .language-card h3 {
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+            font-size: 1.8rem;
+        }
+        
+        .language-card p {
+            color: var(--gray);
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+        
+        /* Language Pages */
+        .language-hero {
+            padding: 150px 0 80px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .language-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .language-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .language-hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        
+        /* English Page */
+        .english-hero {
+            background: linear-gradient(135deg, #1e3c8b, #3b6fde);
+        }
+        
+        /* Spanish Page */
+        .spanish-hero {
+            background: linear-gradient(135deg, #c40e0e, #e63939);
+        }
+        
+        /* French Page */
+        .french-hero {
+            background: linear-gradient(135deg, #002395, #1e5bc5);
+        }
+        
+        /* German Page */
+        .german-hero {
+            background: linear-gradient(135deg, #000000, #dd0000, #ffce00);
+            background-size: 300% 300%;
+            animation: germanGradient 8s ease infinite;
+        }
+        
+        /* Italian Page */
+        .italian-hero {
+            background: linear-gradient(135deg, #009246, #ffffff, #ce2b37);
+            background-size: 300% 300%;
+            animation: italianGradient 8s ease infinite;
+        }
+        
+        /* Japanese Page */
+        .japanese-hero {
+            background: linear-gradient(135deg, #bc002d, #ffffff);
+            background-size: 200% 200%;
+            animation: japaneseGradient 6s ease infinite;
+        }
+        
+        /* Language Content */
+        .language-content {
+            padding: 80px 0;
+        }
+        
+        .language-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+        
+        .overview-card {
             background: white;
             border-radius: 15px;
             padding: 30px;
@@ -70,7 +545,7 @@
             overflow: hidden;
         }
         
-        .exercise-card::before {
+        .overview-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -80,183 +555,184 @@
             background: linear-gradient(90deg, var(--primary), var(--secondary));
         }
         
-        .exercise-card:hover {
+        .overview-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
         
-        .exercise-card h3 {
+        .overview-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .overview-card h3 {
             margin-bottom: 15px;
             color: var(--primary-dark);
+        }
+        
+        .language-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        /* Difficulty Levels */
+        .difficulty-levels {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+        
+        .difficulty-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .difficulty-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .difficulty-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .difficulty-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            color: white;
+            font-size: 2rem;
+            transition: var(--transition);
+        }
+        
+        .difficulty-card:hover .difficulty-icon {
+            transform: scale(1.1) rotate(10deg);
+        }
+        
+        /* Exercise Pages */
+        .exercise-page {
+            padding: 120px 0 80px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
+        
+        .exercise-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exercise-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .exercise-title {
+            font-size: 2rem;
+            color: var(--primary-dark);
+        }
+        
+        .exercise-progress {
             display: flex;
             align-items: center;
             gap: 10px;
         }
         
-        .exercise-card p {
-            margin-bottom: 20px;
-            color: var(--gray);
-        }
-        
-        .exercise-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .exercise-difficulty {
-            display: inline-block;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .exercise-duration {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-        
-        .exercise-progress-container {
-            margin-top: 20px;
-        }
-        
-        .exercise-progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-        }
-        
-        .exercise-progress-bar {
+        .progress-bar {
+            width: 200px;
             height: 8px;
             background: #e9ecef;
             border-radius: 4px;
             overflow: hidden;
         }
         
-        .exercise-progress-fill {
+        .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             border-radius: 4px;
             transition: width 0.5s ease;
         }
         
-        /* Stiluri pentru paginile de lecții */
-        .lesson-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
+        .exercise-body {
+            margin-bottom: 40px;
         }
         
-        .lesson-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .lesson-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-        
-        .lesson-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-        
-        .lesson-video-container {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            margin-bottom: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .lesson-video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        
-        .lesson-content {
-            margin-top: 20px;
-        }
-        
-        .lesson-content h3 {
-            margin-bottom: 15px;
-            color: var(--primary-dark);
-        }
-        
-        .lesson-content p {
-            margin-bottom: 15px;
-            color: var(--gray);
-        }
-        
-        .lesson-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
-        }
-        
-        .lesson-duration {
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-        
-        .lesson-completion {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .completion-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--gray);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        
-        .completion-checkbox.completed {
-            background: var(--success);
-            border-color: var(--success);
-        }
-        
-        .completion-checkbox.completed i {
-            color: white;
-            font-size: 0.8rem;
-        }
-        
-        /* Stiluri pentru paginile specifice de exerciții */
-        .exercise-question {
+        .exercise-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
             margin-bottom: 30px;
-        }
-        
-        .exercise-question h3 {
-            margin-bottom: 15px;
-            color: var(--primary-dark);
         }
         
         .exercise-options {
@@ -339,44 +815,722 @@
             align-items: center;
         }
         
-        /* Stiluri pentru paginile de lecții specifice */
-        .lesson-navigation {
+        /* Homework Section */
+        .homework-section {
+            margin: 80px 0;
+        }
+        
+        .homework-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .homework-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .homework-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .homework-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .homework-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .homework-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+        
+        .homework-card p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+        
+        .homework-difficulty {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .difficulty-easy {
+            background: rgba(76, 201, 240, 0.2);
+            color: var(--secondary);
+        }
+        
+        .difficulty-medium {
+            background: rgba(255, 204, 0, 0.2);
+            color: var(--warning);
+        }
+        
+        .difficulty-hard {
+            background: rgba(220, 53, 69, 0.2);
+            color: var(--danger);
+        }
+        
+        /* Authentication Modal */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-modal.active {
+            display: flex;
+        }
+        
+        .auth-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: modalAppear 0.3s ease;
+        }
+        
+        .auth-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
+            margin-bottom: 30px;
         }
         
-        .lesson-resources {
-            margin-top: 30px;
+        .auth-header h2 {
+            color: var(--primary-dark);
         }
         
-        .resources-list {
+        .close-auth {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .close-auth:hover {
+            color: var(--danger);
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .auth-tab {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .auth-tab.active {
+            color: var(--primary);
+        }
+        
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .auth-form {
+            display: none;
+        }
+        
+        .auth-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+        
+        .auth-submit {
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+        }
+        
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        /* Back Button */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+        
+        .back-button:hover {
+            transform: translateX(-5px);
+            color: var(--primary-dark);
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 70px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h4 {
+            margin-bottom: 20px;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
             list-style: none;
         }
         
-        .resources-list li {
-            margin-bottom: 10px;
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+        
+        @keyframes germanGradient {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+        
+        @keyframes italianGradient {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+        
+        @keyframes japaneseGradient {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+        
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Particle Animation */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 300px;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .auth-buttons {
+                display: none;
+            }
+            
+            .user-menu {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .language-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p, .language-hero p {
+                font-size: 1.1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .exercise-content {
+                padding: 30px 20px;
+            }
+            
+            .exercise-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .auth-container {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            html {
+                font-size: 14px;
+            }
+            
+            .hero, .language-hero {
+                padding: 120px 0 80px;
+            }
+            
+            .section {
+                padding: 70px 0;
+            }
+            
+            .language-card, .difficulty-card {
+                padding: 30px 20px;
+            }
+            
+            .progress-bar {
+                width: 150px;
+            }
+        }
+        
+        /* Scroll to top button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 999;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .scroll-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-to-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+        
+        /* Loading animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-circle {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Stiluri noi pentru paginile de exerciții și lecții */
+        .exercise-container, .lesson-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        .exercise-card, .lesson-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exercise-card::before, .lesson-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .exercise-card:hover, .lesson-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .exercise-card h3, .lesson-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary-dark);
             display: flex;
             align-items: center;
             gap: 10px;
         }
         
-        .resources-list a {
-            color: var(--primary);
-            text-decoration: none;
+        .exercise-card p, .lesson-card p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+        
+        .exercise-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .exercise-difficulty {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .exercise-duration, .lesson-duration {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .exercise-progress-container {
+            margin-top: 20px;
+        }
+        
+        .exercise-progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .exercise-progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .exercise-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .lesson-video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .lesson-video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .lesson-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .lesson-completion {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .completion-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             transition: var(--transition);
         }
         
-        .resources-list a:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
+        .completion-checkbox.completed {
+            background: var(--success);
+            border-color: var(--success);
         }
         
-        /* Restul CSS-ului existent rămâne neschimbat */
-        /* ... */
+        .completion-checkbox.completed i {
+            color: white;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
@@ -1152,268 +2306,6 @@
         </section>
     </div>
 
-    <!-- French Language Page -->
-    <div id="french-page" class="page">
-        <section class="language-hero french-hero">
-            <div class="particles" id="french-particles"></div>
-            <div class="container">
-                <div class="language-hero-content">
-                    <a href="#" class="back-button" data-page="languages" style="color: white;">
-                        <i class="fas fa-arrow-left"></i>
-                        Înapoi la Limbi
-                    </a>
-                    <h1 data-aos="fade-up">Apprendre le Français</h1>
-                    <p data-aos="fade-up" data-aos-delay="200">Découvrez la langue de l'amour et de la diplomatie</p>
-                    <div class="hero-buttons" data-aos="fade-up" data-aos-delay="400">
-                        <button class="btn btn-light" data-page="french-exercises">
-                            <i class="fas fa-pen"></i>
-                            Commencer les Exercices
-                        </button>
-                        <button class="btn btn-outline" style="border-color: white; color: white;" data-page="french-lessons">
-                            <i class="fas fa-book"></i>
-                            Voir les Leçons
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="language-content">
-            <div class="container">
-                <div class="section-title">
-                    <h2 data-aos="fade-up">À Propos de la Langue Française</h2>
-                    <p data-aos="fade-up" data-aos-delay="200">Le français est une langue romane parlée principalement en France</p>
-                </div>
-
-                <div class="language-overview">
-                    <div class="overview-card" data-aos="fade-up" data-aos-delay="0">
-                        <div class="overview-icon">
-                            <i class="fas fa-globe-americas"></i>
-                        </div>
-                        <h3>Importance Mondiale</h3>
-                        <p>Le français est la cinquième langue la plus parlée dans le monde avec environ 300 millions de locuteurs. C'est une langue officielle dans 29 pays et une langue de travail dans les organisations internationales.</p>
-                    </div>
-                    <div class="overview-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="overview-icon">
-                            <i class="fas fa-history"></i>
-                        </div>
-                        <h3>Développement Historique</h3>
-                        <p>Le français a évolué à partir du latin vulgaire de l'Empire romain, comme toutes les langues romanes. Les premiers textes en français apparaissent au IXe siècle.</p>
-                    </div>
-                    <div class="overview-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="overview-icon">
-                            <i class="fas fa-language"></i>
-                        </div>
-                        <h3>Famille Linguistique</h3>
-                        <p>Le français appartient à la famille des langues indo-européennes, groupe des langues romanes. Il est étroitement lié à l'occitan, au catalan, à l'espagnol, à l'italien et au portugais.</p>
-                    </div>
-                </div>
-
-                <div class="section-title">
-                    <h2 data-aos="fade-up">Statistiques de la Langue Française</h2>
-                    <p data-aos="fade-up" data-aos-delay="200">Faits clés sur le français dans le monde</p>
-                </div>
-
-                <div class="language-stats">
-                    <div class="stat-card" data-aos="fade-up" data-aos-delay="0">
-                        <div class="stat-number">300M</div>
-                        <div class="stat-label">Locuteurs Totaux</div>
-                    </div>
-                    <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="stat-number">29</div>
-                        <div class="stat-label">Pays</div>
-                    </div>
-                    <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="stat-number">5th</div>
-                        <div class="stat-label">Plus Parlée</div>
-                    </div>
-                    <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
-                        <div class="stat-number">1,200+</div>
-                        <div class="stat-label">Ans d'Ancienneté</div>
-                    </div>
-                </div>
-
-                <div class="section-title">
-                    <h2 data-aos="fade-up">Parcours d'Apprentissage</h2>
-                    <p data-aos="fade-up" data-aos-delay="200">Choisissez votre niveau initial et commencez votre voyage en français</p>
-                </div>
-
-                <div class="difficulty-levels">
-                    <div class="difficulty-card" data-aos="fade-up" data-aos-delay="0">
-                        <div class="difficulty-icon">
-                            <i class="fas fa-seedling"></i>
-                        </div>
-                        <h3>Débutant (A1-A2)</h3>
-                        <p>Apprenez le vocabulaire de base, les structures grammaticales simples et les expressions quotidiennes. Concentrez-vous sur la présentation, les questions simples et la compréhension des instructions de base.</p>
-                        <button class="btn btn-outline" data-page="french-beginner-exercises">Commencer à Apprendre</button>
-                    </div>
-                    <div class="difficulty-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="difficulty-icon">
-                            <i class="fas fa-leaf"></i>
-                        </div>
-                        <h3>Intermédiaire (B1-B2)</h3>
-                        <p>Élargissez votre vocabulaire, maîtrisez la grammaire complexe et améliorez votre fluidité. Apprenez à décrire des expériences, exprimer des opinions et gérer la plupart des situations en voyageant.</p>
-                        <button class="btn btn-outline" data-page="french-intermediate-exercises">Continuer à Apprendre</button>
-                    </div>
-                    <div class="difficulty-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="difficulty-icon">
-                            <i class="fas fa-tree"></i>
-                        </div>
-                        <h3>Avancé (C1-C2)</h3>
-                        <p>Affinez vos compétences linguistiques jusqu'à un niveau quasi natif. Concentrez-vous sur les expressions nuancées, le vocabulaire professionnel et la compréhension des significations implicites dans les textes complexes.</p>
-                        <button class="btn btn-outline" data-page="french-advanced-exercises">Maîtriser le Français</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- French Exercises Page -->
-    <div id="french-exercises" class="page">
-        <section class="section">
-            <div class="container">
-                <a href="#" class="back-button" data-page="french">
-                    <i class="fas fa-arrow-left"></i>
-                    Retour au Français
-                </a>
-                <div class="section-title">
-                    <h2 data-aos="fade-up">Exercices de Français</h2>
-                    <p data-aos="fade-up" data-aos-delay="200">Pratiquez et améliorez vos compétences en français avec des exercices interactifs</p>
-                </div>
-
-                <div class="exercise-container">
-                    <div class="exercise-card" data-aos="fade-up" data-aos-delay="0">
-                        <h3><i class="fas fa-pen"></i> Vocabulaire de Base</h3>
-                        <p>Apprenez 50 mots essentiels en français avec la prononciation, des exemples et l'utilisation en contexte. Parfait pour les débutants absolus.</p>
-                        <div class="exercise-meta">
-                            <span class="exercise-difficulty difficulty-easy">Débutant</span>
-                            <span class="exercise-duration">15 min</span>
-                        </div>
-                        <div class="exercise-progress-container">
-                            <div class="exercise-progress-label">
-                                <span>Progrès</span>
-                                <span>0%</span>
-                            </div>
-                            <div class="exercise-progress-bar">
-                                <div class="exercise-progress-fill" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        <button class="btn btn-outline" data-page="french-vocabulary-exercise">Commencer l'Exercice</button>
-                    </div>
-                    <div class="exercise-card" data-aos="fade-up" data-aos-delay="100">
-                        <h3><i class="fas fa-microphone"></i> Pratique de Conversation</h3>
-                        <p>Pratiquez la conversation avec l'IA sur les routines quotidiennes, les loisirs et les situations courantes. Améliorez votre fluidité et votre prononciation.</p>
-                        <div class="exercise-meta">
-                            <span class="exercise-difficulty difficulty-medium">Intermédiaire</span>
-                            <span class="exercise-duration">20 min</span>
-                        </div>
-                        <div class="exercise-progress-container">
-                            <div class="exercise-progress-label">
-                                <span>Progrès</span>
-                                <span>0%</span>
-                            </div>
-                            <div class="exercise-progress-bar">
-                                <div class="exercise-progress-fill" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        <button class="btn btn-outline" data-page="french-conversation-exercise">Commencer l'Exercice</button>
-                    </div>
-                    <div class="exercise-card" data-aos="fade-up" data-aos-delay="200">
-                        <h3><i class="fas fa-book"></i> Défi Grammatical</h3>
-                        <p>Testez vos connaissances des structures grammaticales complexes en français, y compris le subjonctif, les pronoms et les temps verbaux.</p>
-                        <div class="exercise-meta">
-                            <span class="exercise-difficulty difficulty-hard">Avancé</span>
-                            <span class="exercise-duration">25 min</span>
-                        </div>
-                        <div class="exercise-progress-container">
-                            <div class="exercise-progress-label">
-                                <span>Progrès</span>
-                                <span>0%</span>
-                            </div>
-                            <div class="exercise-progress-bar">
-                                <div class="exercise-progress-fill" style="width: 0%"></div>
-                            </div>
-                        </div>
-                        <button class="btn btn-outline" data-page="french-grammar-exercise">Commencer l'Exercice</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- French Lessons Page -->
-    <div id="french-lessons" class="page">
-        <section class="section">
-            <div class="container">
-                <a href="#" class="back-button" data-page="french">
-                    <i class="fas fa-arrow-left"></i>
-                    Retour au Français
-                </a>
-                <div class="section-title">
-                    <h2 data-aos="fade-up">Leçons de Français</h2>
-                    <p data-aos="fade-up" data-aos-delay="200">Apprenez le français grâce à des leçons vidéo dispensées par des professeurs expérimentés</p>
-                </div>
-
-                <div class="lesson-container">
-                    <div class="lesson-card" data-aos="fade-up" data-aos-delay="0">
-                        <div class="lesson-video-container">
-                            <iframe src="https://www.youtube.com/embed/h-csF3J2kYU" title="French Lesson 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                        <div class="lesson-content">
-                            <h3>Français de Base: Salutations et Présentations</h3>
-                            <p>Apprenez à saluer les gens, à vous présenter et à avoir des conversations de base en français. Cette leçon couvre le vocabulaire et les phrases essentiels pour les situations quotidiennes.</p>
-                            <div class="lesson-meta">
-                                <span class="lesson-duration">15 min</span>
-                                <div class="lesson-completion">
-                                    <span>Marquer comme terminé</span>
-                                    <div class="completion-checkbox">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lesson-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="lesson-video-container">
-                            <iframe src="https://www.youtube.com/embed/S68rA0_L-1Y" title="French Lesson 2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                        <div class="lesson-content">
-                            <h3>Grammaire Essentielle: Les Articles</h3>
-                            <p>Maîtrisez l'utilisation des articles définis, indéfinis et partitifs en français. Apprenez quand utiliser chaque type d'article et pratiquez avec des exercices interactifs.</p>
-                            <div class="lesson-meta">
-                                <span class="lesson-duration">20 min</span>
-                                <div class="lesson-completion">
-                                    <span>Marquer comme terminé</span>
-                                    <div class="completion-checkbox">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="lesson-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="lesson-video-container">
-                            <iframe src="https://www.youtube.com/embed/h1Z1LO1dXp4" title="French Lesson 3" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                        <div class="lesson-content">
-                            <h3>Vocabulaire Français: Nourriture et Restaurants</h3>
-                            <p>Élargissez votre vocabulaire avec des mots et des phrases liés à la nourriture, aux repas et aux restaurants. Parfait pour les voyageurs et les amateurs de gastronomie.</p>
-                            <div class="lesson-meta">
-                                <span class="lesson-duration">18 min</span>
-                                <div class="lesson-completion">
-                                    <span>Marquer comme terminé</span>
-                                    <div class="completion-checkbox">
-                                        <i class="fas fa-check"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -1509,16 +2401,7 @@
             }
         }
 
-        // Initialize particles on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            createParticles('particles', 40);
-            createParticles('english-particles', 30);
-            createParticles('vocabulary-particles', 25);
-            createParticles('spanish-particles', 30);
-            createParticles('french-particles', 30);
-        });
-
-        // Page Navigation System
+        // Page Navigation System - CORECTAT
         function showPage(pageId) {
             // Hide all pages
             document.querySelectorAll('.page').forEach(page => {
@@ -1537,16 +2420,21 @@
                 setTimeout(() => {
                     AOS.refresh();
                 }, 300);
+            } else {
+                console.log('Pagina nu a fost găsită:', pageId);
             }
         }
 
-        // Set up page navigation
+        // Set up page navigation - CORECTAT
         document.addEventListener('DOMContentLoaded', function() {
             // Set up navigation links
             document.querySelectorAll('[data-page]').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const pageId = this.getAttribute('data-page') + '-page';
+                    const pageName = this.getAttribute('data-page');
+                    const pageId = pageName + '-page';
+                    
+                    console.log('Navigare către:', pageId);
                     showPage(pageId);
                     
                     // Close mobile menu if open
@@ -1560,23 +2448,31 @@
             
             // Show home page by default
             showPage('home-page');
+            
+            // Create particles
+            createParticles('particles', 40);
+            createParticles('english-particles', 30);
+            createParticles('vocabulary-particles', 25);
+            createParticles('spanish-particles', 30);
         });
 
         // Mobile menu toggle
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navLinks = document.querySelector('.nav-links');
         
-        mobileMenuBtn.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-            const icon = this.querySelector('i');
-            if (navLinks.classList.contains('active')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
-        });
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                const icon = this.querySelector('i');
+                if (navLinks.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
 
         // Header scroll effect
         const header = document.getElementById('header');
@@ -1605,48 +2501,31 @@
             });
         });
 
-        // Parallax effect for floating elements
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const floatingElements = document.querySelectorAll('.floating-element');
-            
-            floatingElements.forEach((element, index) => {
-                const speed = 0.5 + (index * 0.1);
-                const yPos = -(scrolled * speed);
-                element.style.transform = `translateY(${yPos}px) rotate(${scrolled * 0.05}deg)`;
-            });
-        });
-
         // Authentication System
         const authModal = document.getElementById('auth-modal');
         const loginBtn = document.getElementById('login-btn');
         const registerBtn = document.getElementById('register-btn');
         const closeAuth = document.getElementById('close-auth');
-        const authTabs = document.querySelectorAll('.auth-tab');
-        const authForms = document.querySelectorAll('.auth-form');
-        const switchToRegister = document.getElementById('switch-to-register');
-        const switchToLogin = document.getElementById('switch-to-login');
-        const loginForm = document.getElementById('login-form');
-        const registerForm = document.getElementById('register-form');
-        const userMenu = document.getElementById('user-menu');
-        const authButtons = document.getElementById('auth-buttons');
-        const userAvatar = document.getElementById('user-avatar');
 
         // Open auth modal
-        loginBtn.addEventListener('click', function() {
-            authModal.classList.add('active');
-            switchToTab('login');
-        });
+        if (loginBtn) {
+            loginBtn.addEventListener('click', function() {
+                authModal.classList.add('active');
+            });
+        }
 
-        registerBtn.addEventListener('click', function() {
-            authModal.classList.add('active');
-            switchToTab('register');
-        });
+        if (registerBtn) {
+            registerBtn.addEventListener('click', function() {
+                authModal.classList.add('active');
+            });
+        }
 
         // Close auth modal
-        closeAuth.addEventListener('click', function() {
-            authModal.classList.remove('active');
-        });
+        if (closeAuth) {
+            closeAuth.addEventListener('click', function() {
+                authModal.classList.remove('active');
+            });
+        }
 
         // Close modal when clicking outside
         authModal.addEventListener('click', function(e) {
@@ -1655,142 +2534,67 @@
             }
         });
 
-        // Switch between login and register tabs
-        function switchToTab(tabName) {
-            // Update tabs
-            authTabs.forEach(tab => {
-                tab.classList.remove('active');
-                if (tab.getAttribute('data-tab') === tabName) {
-                    tab.classList.add('active');
-                }
-            });
-            
-            // Update forms
-            authForms.forEach(form => {
-                form.classList.remove('active');
-                if (form.id === `${tabName}-form`) {
-                    form.classList.add('active');
-                }
-            });
-            
-            // Update title
-            document.getElementById('auth-title').textContent = 
-                tabName === 'login' ? 'Autentificare' : 'Înregistrare';
-        }
-        
-        // Tab click events
-        authTabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                const tabName = this.getAttribute('data-tab');
-                switchToTab(tabName);
-            });
-        });
-        
-        // Switch between forms
-        switchToRegister.addEventListener('click', function(e) {
-            e.preventDefault();
-            switchToTab('register');
-        });
-        
-        switchToLogin.addEventListener('click', function(e) {
-            e.preventDefault();
-            switchToTab('login');
-        });
-        
-        // Form submission
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            
-            // Simulate login
-            simulateLogin(email);
-        });
-        
-        registerForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('register-name').value;
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-            
-            // Simulate registration
-            simulateLogin(email, name);
-        });
-        
-        function simulateLogin(email, name = 'Utilizator') {
-            // Close modal
-            authModal.classList.remove('active');
-            
-            // Hide auth buttons, show user menu
-            authButtons.style.display = 'none';
-            userMenu.style.display = 'flex';
-            
-            // Set user avatar with first letter
-            userAvatar.textContent = name.charAt(0).toUpperCase();
-            
-            // Show success message
-            alert(`Bine ai venit, ${name}! Te-ai autentificat cu succes.`);
-        }
-        
         // Exercise functionality
         const exerciseOptions = document.querySelectorAll('.exercise-option');
         const checkAnswerBtn = document.getElementById('check-answer');
         const nextQuestionBtn = document.getElementById('next-question');
         const exerciseFeedback = document.getElementById('exercise-feedback');
         
-        let selectedOption = null;
-        
-        exerciseOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                // Remove previous selection
-                exerciseOptions.forEach(opt => {
-                    opt.classList.remove('selected');
+        if (checkAnswerBtn && nextQuestionBtn && exerciseFeedback) {
+            let selectedOption = null;
+            
+            exerciseOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove previous selection
+                    exerciseOptions.forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Select current option
+                    this.classList.add('selected');
+                    selectedOption = this;
                 });
-                
-                // Select current option
-                this.classList.add('selected');
-                selectedOption = this;
             });
-        });
-        
-        checkAnswerBtn.addEventListener('click', function() {
-            if (!selectedOption) {
-                alert('Te rog selectează un răspuns!');
-                return;
-            }
             
-            // Show feedback
-            exerciseFeedback.style.display = 'block';
-            
-            // Mark correct/incorrect
-            if (selectedOption.getAttribute('data-correct') === 'true') {
-                selectedOption.classList.add('correct');
-                exerciseFeedback.classList.add('correct');
-                exerciseFeedback.classList.remove('incorrect');
-            } else {
-                selectedOption.classList.add('incorrect');
-                exerciseFeedback.classList.add('incorrect');
-                exerciseFeedback.classList.remove('correct');
+            checkAnswerBtn.addEventListener('click', function() {
+                if (!selectedOption) {
+                    alert('Te rog selectează un răspuns!');
+                    return;
+                }
                 
-                // Highlight correct answer
-                exerciseOptions.forEach(opt => {
-                    if (opt.getAttribute('data-correct') === 'true') {
-                        opt.classList.add('correct');
-                    }
-                });
-            }
+                // Show feedback
+                exerciseFeedback.style.display = 'block';
+                
+                // Mark correct/incorrect
+                if (selectedOption.getAttribute('data-correct') === 'true') {
+                    selectedOption.classList.add('correct');
+                    exerciseFeedback.classList.add('correct');
+                    exerciseFeedback.classList.remove('incorrect');
+                } else {
+                    selectedOption.classList.add('incorrect');
+                    exerciseFeedback.classList.add('incorrect');
+                    exerciseFeedback.classList.remove('correct');
+                    
+                    // Highlight correct answer
+                    exerciseOptions.forEach(opt => {
+                        if (opt.getAttribute('data-correct') === 'true') {
+                            opt.classList.add('correct');
+                        }
+                    });
+                }
+                
+                // Show next question button
+                checkAnswerBtn.style.display = 'none';
+                nextQuestionBtn.style.display = 'block';
+            });
             
-            // Show next question button
-            checkAnswerBtn.style.display = 'none';
-            nextQuestionBtn.style.display = 'block';
-        });
-        
-        nextQuestionBtn.addEventListener('click', function() {
-            // In a real app, this would load the next question
-            alert('Felicitări! Ai finalizat acest exercițiu. Întoarce-te pentru mai multe exerciții.');
-            showPage('english-exercises-page');
-        });
-        
+            nextQuestionBtn.addEventListener('click', function() {
+                // In a real app, this would load the next question
+                alert('Felicitări! Ai finalizat acest exercițiu. Întoarce-te pentru mai multe exerciții.');
+                showPage('english-exercises-page');
+            });
+        }
+
         // Lesson completion functionality
         const completionCheckboxes = document.querySelectorAll('.completion-checkbox');
         
@@ -1803,30 +2607,6 @@
                 } else {
                     alert('Lecție marcată ca necompletată!');
                 }
-            });
-        });
-        
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            // Show home page
-            showPage('home-page');
-            
-            // Create particles
-            createParticles('particles', 40);
-            createParticles('english-particles', 30);
-            createParticles('vocabulary-particles', 25);
-            createParticles('spanish-particles', 30);
-            createParticles('french-particles', 30);
-            
-            // Add hover effects to all buttons
-            document.querySelectorAll('.btn').forEach(button => {
-                button.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-5px)';
-                });
-                
-                button.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                });
             });
         });
     </script>
